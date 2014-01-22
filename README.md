@@ -88,8 +88,9 @@ How To Contribute
 
 * Clone: `git@github.com:jessepollak/mixpanel-python-async.git`
 * Create a topic branch: `git checkout -b awesome_feature`
-* Commit away.
+* Commit away (and add unit tests for any code your write).
 * Keep up to date: `git fetch && git rebase origin/master`.
+* Run the tests: `python setup.py test`
 
 Once you’re ready:
 
