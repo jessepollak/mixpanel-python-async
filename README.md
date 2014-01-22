@@ -2,6 +2,8 @@ mixpanel-python-async
 ===============
 This library allows for using the Mixpanel python client in an asynchronous way. Using the AsyncBufferedConsumer, events sent to the Mixpanel API will be batched and then flushed in a thread without blocking the main thread. This is extremely useful in a request/response scenario where response time is important.
 
+This library was originally created for use at [Clef](https://getclef.com) and is production use there. 
+
 Installation
 ------------
 The library can be installed using pip:
