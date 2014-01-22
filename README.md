@@ -102,7 +102,7 @@ Once it’s accepted:
 can change origin to point to the Read+Write URL:
 
 ```
-git remote set-url origin git@github.com:clef/wordpress.git
+git remote set-url origin git@github.com:jessepollak/mixpanel-python-async.git
 ```
 
 Otherwise, you can continue to hack away in your own fork.
