@@ -112,6 +112,6 @@ Otherwise, you can continue to hack away in your own fork.
 Additional Information
 ----------------------
 
-[Mixpanel python docs](https://www.mixpanel.com/help/reference/python) 
+[Mixpanel python docs](https://www.mixpanel.com/help/reference/python)  
 [Mixpanel client libary](http://mixpanel.github.io/mixpanel-python/)
 
