@@ -55,7 +55,7 @@ from mixpanel import Mixpanel
 from mixpanel_async import AsynBufferedConsumer
 
 consumer = AsyncBufferedConsumer()
-mixpanel = Mixpanel(YOUR_TOKEN, consumer=consumer)
+mp = Mixpanel(YOUR_TOKEN, consumer=consumer)
 
 # tracks an event with certain properties 
 mp.track('button clicked', {'color' : 'blue', 'size': 'large'})
