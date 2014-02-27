@@ -16,7 +16,7 @@ Typical usage usually looks like this:
 
     #!/usr/bin/env python
     from mixpanel import Mixpanel
-    from mixpanel_async import AsynBufferedConsumer
+    from mixpanel_async import AsyncBufferedConsumer
 
     mp = Mixpanel(YOUR_TOKEN, consumer=AsyncBufferedConsumer())
 
