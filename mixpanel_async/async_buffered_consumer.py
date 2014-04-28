@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import json
+import copy
 import threading
 from datetime import datetime, timedelta
 from mixpanel import BufferedConsumer as SynchronousBufferedConsumer
@@ -78,6 +79,8 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         self.flush_after = flush_after
         self.flush_first = flush_first
 
+        self._async_buffers = copy.deepcopy(self._buffers)
+
         if not self.flush_first:
             self.last_flushed = datetime.now()
         else:
@@ -106,7 +109,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         full = False
 
         if endpoint:
-            full = len(self._buffers[endpoint]) >= self._max_size
+            full = len(self._async_buffers[endpoint]) >= self._max_size
 
         # always flush the first event
         stale = self.last_flushed is None
@@ -145,10 +148,11 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         :type json_message: str
         :raises: MixpanelException
         '''
-        if endpoint not in self._buffers:
-            raise MixpanelException('No such endpoint "{0}". Valid endpoints are one of {1}'.format(self._buffers.keys()))
+        if endpoint not in self._async_buffers:
+            raise MixpanelException('No such endpoint "{0}". Valid endpoints are one of {1}'.format(self._async_buffers.keys()))
 
-        buf = self._buffers[endpoint]
+        print json_message, 'message'
+        buf = self._async_buffers[endpoint]
         buf.append(json_message)
 
         should_flush = self._should_flush(endpoint)
@@ -186,6 +190,8 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
             with self.flush_lock:
                 if self._flush_thread_is_free():
 
+                    self.transfer_buffers(endpoint=endpoint)
+
                     self.flushing_thread = FlushThread(self, endpoint=endpoint)
                     self.flushing_thread.start()
 
@@ -206,13 +212,35 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
                     flushing = False
                     
         else:
-            self._sync_flush()
+            self.transfer_buffers(endpoint=endpoint)
+            self._sync_flush(endpoint=endpoint)
             flushing = True
 
         if flushing:
             self.last_flushed = datetime.now()
 
         return flushing
+
+
+    def transfer_buffers(self, endpoint=None):
+        """
+        Transfer events from the `_async_buffers` where they are stored to the
+        `_buffers` where they will be flushed from by the flushing thread.
+
+        :param endpoint (str): One of 'events' or 'people, the Mixpanel endpoint 
+        that is about to be flushed
+        """
+        if endpoint: 
+            keys = [endpoint]
+        else:
+            keys = self._async_buffers.keys()
+
+        for key in keys:
+            buf = self._async_buffers[key]
+            while buf:
+                self._buffers[key].append(buf[0])
+                buf = buf[1:]
+            self._async_buffers[key] = buf
 
 
     def _flush_endpoint(self, endpoint, async=True):
