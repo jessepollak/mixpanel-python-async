@@ -151,7 +151,6 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         if endpoint not in self._async_buffers:
             raise MixpanelException('No such endpoint "{0}". Valid endpoints are one of {1}'.format(self._async_buffers.keys()))
 
-        print json_message, 'message'
         buf = self._async_buffers[endpoint]
         buf.append(json_message)
 
