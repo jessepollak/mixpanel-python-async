@@ -15,8 +15,13 @@ sys.path.append('../')
 try:
     from mock import Mock, patch, DEFAULT
 except ImportError:
-    print 'mixpanel-python requires the mock package to run the test suite'
-    raise
+    raise Exception(
+        """
+        mixpanel-python-async requires the mock package to run the test suite. 
+        Please run: 
+
+            $ pip install mock
+        """)
 
 from mixpanel_async import AsyncBufferedConsumer
 
@@ -129,6 +134,17 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
 
         sync_flush.assert_called_once_with(endpoint=self.ENDPOINT)
 
+    def test_does_not_drop_events(self):
+        self.consumer = AsyncBufferedConsumer(flush_first=True)
+        send_patch = patch.object(self.consumer._consumer, 'send').start()
+
+        self.send_event()
+        self.send_event()
+
+        self.wait_for_threads()
+
+        send_patch.assert_called_once_with(self.ENDPOINT, '[{"test": true}]')
+        self.assertEqual(self.consumer._async_buffers[self.ENDPOINT], [self.JSON])
 
     def send_event(self, endpoint=None):
         endpoint = endpoint or self.ENDPOINT
