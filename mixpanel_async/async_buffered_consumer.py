@@ -236,10 +236,8 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
 
         for key in keys:
             buf = self._async_buffers[key]
-            while buf:
-                self._buffers[key].append(buf[0])
-                buf = buf[1:]
-            self._async_buffers[key] = buf
+            while buf: 
+                self._buffers[key].append(buf.pop(0))
 
 
     def _flush_endpoint(self, endpoint, async=True):
