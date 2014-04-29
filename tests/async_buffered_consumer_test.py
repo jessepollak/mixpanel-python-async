@@ -15,8 +15,13 @@ sys.path.append('../')
 try:
     from mock import Mock, patch, DEFAULT
 except ImportError:
-    print 'mixpanel-python requires the mock package to run the test suite'
-    raise
+    raise Exception(
+        """
+        mixpanel-python-async requires the mock package to run the test suite. 
+        Please run: 
+
+            $ pip install mock
+        """)
 
 from mixpanel_async import AsyncBufferedConsumer
 
