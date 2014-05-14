@@ -2,7 +2,7 @@ mixpanel-python-async
 ===============
 This library allows for using the Mixpanel python client in an asynchronous way. Using the AsyncBufferedConsumer, events sent to the Mixpanel API will be batched and then flushed in a thread without blocking the main thread. This is extremely useful in a request/response scenario where response time is important.
 
-This library was originally created for use at [Clef](https://getclef.com) and is in production use there. 
+This library was originally created for use at [Clef](https://getclef.com) and is in production use there.
 
 Installation
 ------------
@@ -20,7 +20,7 @@ Typical usage usually looks like this:
 
     mp = Mixpanel(YOUR_TOKEN, consumer=AsyncBufferedConsumer())
 
-    # tracks an event with certain properties 
+    # tracks an event with certain properties
     mp.track('button clicked', {'color' : 'blue', 'size': 'large'})
 
     # sends an update to a user profile
@@ -52,12 +52,12 @@ Typically, after configuring the AsyncBufferedConsumer and passing it to the Mix
 ```python
 #!/usr/bin/env python
 from mixpanel import Mixpanel
-from mixpanel_async import AsynBufferedConsumer
+from mixpanel_async import AsyncBufferedConsumer
 
 consumer = AsyncBufferedConsumer()
 mp = Mixpanel(YOUR_TOKEN, consumer=consumer)
 
-# tracks an event with certain properties 
+# tracks an event with certain properties
 mp.track('button clicked', {'color' : 'blue', 'size': 'large'})
 
 consumer.flush(async=False)
@@ -115,6 +115,6 @@ Otherwise, you can continue to hack away in your own fork.
 Additional Information
 ----------------------
 
-[Mixpanel python docs](https://www.mixpanel.com/help/reference/python)  
+[Mixpanel python docs](https://www.mixpanel.com/help/reference/python)
 [Mixpanel client libary](http://mixpanel.github.io/mixpanel-python/)
 
