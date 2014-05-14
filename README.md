@@ -21,7 +21,7 @@ Typical usage usually looks like this:
     mp = Mixpanel(YOUR_TOKEN, consumer=AsyncBufferedConsumer())
 
     # tracks an event with certain properties
-    mp.track('button clicked', {'color' : 'blue', 'size': 'large'})
+    mp.track('distinct_id', 'event name', {'color' : 'blue', 'size': 'large'})
 
     # sends an update to a user profile
     mp.people_set(USER_ID, {'$first_name' : 'Amy', 'favorite color': 'red'})
@@ -58,7 +58,7 @@ consumer = AsyncBufferedConsumer()
 mp = Mixpanel(YOUR_TOKEN, consumer=consumer)
 
 # tracks an event with certain properties
-mp.track('button clicked', {'color' : 'blue', 'size': 'large'})
+mp.track('distinct_id', 'event name', {'color' : 'blue', 'size': 'large'})
 
 consumer.flush(async=False)
 # all events are flushed and process ends
