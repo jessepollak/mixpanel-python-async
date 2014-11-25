@@ -17,8 +17,8 @@ try:
 except ImportError:
     raise Exception(
         """
-        mixpanel-python-async requires the mock package to run the test suite. 
-        Please run: 
+        mixpanel-python-async requires the mock package to run the test suite.
+        Please run:
 
             $ pip install mock
         """)
@@ -32,7 +32,7 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.consumer = AsyncBufferedConsumer(
-            max_size=self.MAX_SIZE, 
+            max_size=self.MAX_SIZE,
             flush_first=False
         )
 
@@ -58,7 +58,7 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
         flush_endpoint.assert_called_with(self.ENDPOINT)
 
 
-    @patch.object(AsyncBufferedConsumer, '_sync_flush')    
+    @patch.object(AsyncBufferedConsumer, '_sync_flush')
     def test_flush_gets_called_in_different_thread_if_async(self, sync_flush):
         main_thread_id = thread.get_ident()
         flush_thread_id = None
@@ -145,6 +145,10 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
 
         send_patch.assert_called_once_with(self.ENDPOINT, '[{"test": true}]')
         self.assertEqual(self.consumer._async_buffers[self.ENDPOINT], [self.JSON])
+
+    def test_raises_exception_with_bad_endpoint(self):
+        with self.assertRaises(mixpanel.MixpanelException):
+            self.consumer.send('badendpoint', True)
 
     def send_event(self, endpoint=None):
         endpoint = endpoint or self.ENDPOINT
