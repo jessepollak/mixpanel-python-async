@@ -4,6 +4,7 @@ import copy
 import threading
 from datetime import datetime, timedelta
 from mixpanel import BufferedConsumer as SynchronousBufferedConsumer
+from mixpanel import MixpanelException
 
 class FlushThread(threading.Thread):
     '''
@@ -44,7 +45,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
 
     Because AsyncBufferedConsumer holds events until the `flush_after` timeout
     or an endpoint queue hits the size of _max_queue_size, you should call
-    flush(async=False) before you terminate any process where you have been 
+    flush(async=False) before you terminate any process where you have been
     using the AsyncBufferedConsumer.
     '''
 
@@ -52,10 +53,10 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
     ALL = "ALL"
     ENDPOINT = "ENDPOINT"
 
-    def __init__(self, flush_after=timedelta(0, 10), flush_first=True, max_size=20, 
+    def __init__(self, flush_after=timedelta(0, 10), flush_first=True, max_size=20,
         events_url=None, people_url=None, *args, **kwargs):
         '''
-        Create a new instance of a AsyncBufferedConsumer class. 
+        Create a new instance of a AsyncBufferedConsumer class.
 
         :param flush_after (datetime.timedelta): the time period after which
         the AsyncBufferedConsumer will flush the events upon receiving a
@@ -68,12 +69,12 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         :param people_url: the Mixpanel API URL that people events will be sent to
         '''
         super(AsyncBufferedConsumer, self).__init__(
-            max_size=max_size, 
-            events_url=events_url, 
+            max_size=max_size,
+            events_url=events_url,
             people_url=people_url
         )
 
-        # remove the minimum max size that the SynchronousBufferedConsumer 
+        # remove the minimum max size that the SynchronousBufferedConsumer
         # class sets
         self._max_size = max_size
         self.flush_after = flush_after
@@ -149,7 +150,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         :raises: MixpanelException
         '''
         if endpoint not in self._async_buffers:
-            raise MixpanelException('No such endpoint "{0}". Valid endpoints are one of {1}'.format(self._async_buffers.keys()))
+            raise MixpanelException('No such endpoint "{0}". Valid endpoints are one of {1}'.format(endpoint, self._async_buffers.keys()))
 
         buf = self._async_buffers[endpoint]
         buf.append(json_message)
@@ -175,8 +176,8 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         thrown will have a message property, containing the text of the message,
         and an endpoint property containing the endpoint that failed.
 
-        
-        :param endpoint (str): One of 'events' or 'people, the Mixpanel endpoint 
+
+        :param endpoint (str): One of 'events' or 'people, the Mixpanel endpoint
         for sending the data
         :param async (bool): Whether to flush the data in a seperate thread or not
         '''
@@ -209,7 +210,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
                     #   event is added this second flush will be retriggered and
                     #   will complete.
                     flushing = False
-                    
+
         else:
             self.transfer_buffers(endpoint=endpoint)
             self._sync_flush(endpoint=endpoint)
@@ -226,17 +227,17 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         Transfer events from the `_async_buffers` where they are stored to the
         `_buffers` where they will be flushed from by the flushing thread.
 
-        :param endpoint (str): One of 'events' or 'people, the Mixpanel endpoint 
+        :param endpoint (str): One of 'events' or 'people, the Mixpanel endpoint
         that is about to be flushed
         """
-        if endpoint: 
+        if endpoint:
             keys = [endpoint]
         else:
             keys = self._async_buffers.keys()
 
         for key in keys:
             buf = self._async_buffers[key]
-            while buf: 
+            while buf:
                 self._buffers[key].append(buf.pop(0))
 
 
