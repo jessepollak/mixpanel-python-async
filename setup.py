@@ -24,6 +24,6 @@ setup(
     ],
     test_suite='tests',
     install_requires=[
-        'mixpanel-py'
+        'mixpanel'
     ]
 )
