@@ -10,7 +10,7 @@ if os.path.exists('README.txt'):
 
 setup(
     name='mixpanel-py-async',
-    version='0.0.5',
+    version='0.0.6',
     author='Jesse Pollak',
     author_email='jpollak92@gmail.com',
     packages=['mixpanel_async'],
