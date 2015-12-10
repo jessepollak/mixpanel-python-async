@@ -1,1 +1,1 @@
-from async_buffered_consumer import AsyncBufferedConsumer
+from .async_buffered_consumer import AsyncBufferedConsumer
