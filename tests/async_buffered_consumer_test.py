@@ -3,12 +3,17 @@ import base64
 import contextlib
 import json
 import unittest
-import urlparse
-import thread
 import datetime
 import time
 import sys
 import mixpanel
+
+try:
+    from urllib.parse import urlparse
+    import _thread as thread
+except ImportError:
+    import thread
+    from urlparse import urlparse
 
 sys.path.append('../')
 
@@ -55,7 +60,7 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
 
         self.consumer._sync_flush()
 
-        flush_endpoint.assert_called_with(self.ENDPOINT)
+        flush_endpoint.assert_any_call(self.ENDPOINT)
 
 
     @patch.object(AsyncBufferedConsumer, '_sync_flush')
