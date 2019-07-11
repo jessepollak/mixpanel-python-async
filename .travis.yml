@@ -1,14 +1,14 @@
+dist: xenial
 language: python
 python:
   - "2.7"
-  - "3.2"
-  - "3.3"
   - "3.4"
-  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
-  # maintainers to fix their pypy-dev package.
+  - "3.5"
+  - "3.6"
+  - "3.7"
   - "pypy"
-# command to install dependencies
+  - "pypy3"
 install:
   - pip install mock
-# command to run tests
-script: python setup.py test
+script:
+  - python setup.py test
