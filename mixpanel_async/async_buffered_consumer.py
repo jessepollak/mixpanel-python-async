@@ -45,7 +45,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
 
     Because AsyncBufferedConsumer holds events until the `flush_after` timeout
     or an endpoint queue hits the size of _max_queue_size, you should call
-    flush(async=False) before you terminate any process where you have been
+    flush(async_=False) before you terminate any process where you have been
     using the AsyncBufferedConsumer.
     '''
 
@@ -163,7 +163,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
             self._flush_endpoint(endpoint)
 
 
-    def flush(self, endpoint=None, async=True):
+    def flush(self, endpoint=None, async_=True):
         '''
         Send all remaining messages to Mixpanel. AsyncBufferedConsumers will
         flush automatically when you call send(), but you will need to call
@@ -184,7 +184,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
 
         flushing = False
 
-        if async:
+        if async_:
             # this flush lock is used to guarantee that only one flushing_thread
             # is ever alive.
             with self.flush_lock:
@@ -241,11 +241,11 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
                 self._buffers[key].append(buf.pop(0))
 
 
-    def _flush_endpoint(self, endpoint, async=True):
+    def _flush_endpoint(self, endpoint, async_=True):
         # we override flush with endpoint so as to keep all the
         # threading logic in one place, while still allowing individual
         # endpoints to be flushed
-        self.flush(endpoint=endpoint, async=async)
+        self.flush(endpoint=endpoint, async_=async_)
 
 
     def _sync_flush(self, endpoint=None):

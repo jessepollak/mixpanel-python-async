@@ -47,7 +47,7 @@ For most users, the default configuration should work perfectly. For more specif
 
 Typically, after configuring the AsyncBufferedConsumer and passing it to the Mixpanel object, you will never have to use it again. That said, there are a few methods which can be useful.
 
-* `flush()` - tells the AsyncBufferedConsumer to flush all of the events in its queues. If you call it with `async=False` this flush will happen in the main thread (useful for ensuring all events are sent before a process ends)
+* `flush()` - tells the AsyncBufferedConsumer to flush all of the events in its queues. If you call it with `async_=False` this flush will happen in the main thread (useful for ensuring all events are sent before a process ends)
 
 ```python
 #!/usr/bin/env python
@@ -60,7 +60,7 @@ mp = Mixpanel(YOUR_TOKEN, consumer=consumer)
 # tracks an event with certain properties
 mp.track('distinct_id', 'event name', {'color' : 'blue', 'size': 'large'})
 
-consumer.flush(async=False)
+consumer.flush(async_=False)
 # all events are flushed and process ends
 ```
 

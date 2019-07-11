@@ -89,7 +89,7 @@ class AsyncBufferedConsumerTestCase(unittest.TestCase):
         sync_flush.side_effect = side_effect
 
         self.send_event()
-        self.consumer.flush(async=False)
+        self.consumer.flush(async_=False)
 
     @patch.object(AsyncBufferedConsumer, '_sync_flush')
     def test_flushes_after_first_event_if_first_flush_true(self, sync_flush):
