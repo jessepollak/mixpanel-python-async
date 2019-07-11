@@ -7,6 +7,11 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+* Argument `api_key` for `AsyncBufferedConsumer.send`, for compatibility with the version
+  4.3.2 of the Mixpanel package.
+
 ### Changed
 
 * Breaking change: Argument of `flush` renamed from `async` to `async_` for

@@ -133,7 +133,7 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         return False
 
 
-    def send(self, endpoint, json_message):
+    def send(self, endpoint, json_message, api_key=None):
         '''
         Record an event or a profile update. Calls to send() will store
         the given message in memory, and (when enough messages have been stored)
@@ -147,6 +147,8 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
         :type endpoint: str (one of 'events' or 'people')
         :param json_message: A json message formatted for the endpoint.
         :type json_message: str
+        :param api_key: Your Mixpanel project's API key
+        :type api_key: str
         :raises: MixpanelException
         '''
         if endpoint not in self._async_buffers:
@@ -154,6 +156,9 @@ class AsyncBufferedConsumer(SynchronousBufferedConsumer):
 
         buf = self._async_buffers[endpoint]
         buf.append(json_message)
+
+        if api_key is not None:
+            self._api_key = api_key
 
         should_flush = self._should_flush(endpoint)
 
