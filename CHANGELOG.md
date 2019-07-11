@@ -7,6 +7,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2019-07-11
+
 ### Added
 
 * Argument `api_key` for `AsyncBufferedConsumer.send`, for compatibility with the version
@@ -31,7 +33,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.0.3] - 2014-04-29
 
-[Unreleased]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.0.6...v0.1.0
 [0.0.6]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/jessepollak/mixpanel-python-async/compare/v0.0.4...v0.0.5
